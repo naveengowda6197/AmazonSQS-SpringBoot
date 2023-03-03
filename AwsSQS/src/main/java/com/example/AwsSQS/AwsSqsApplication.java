@@ -29,10 +29,9 @@ import com.google.gson.Gson;
 
 @RestController
 public class AwsSqsApplication {
-
-
 		@Autowired
 		private QueueMessagingTemplate queueMessagingTemplate;
+	
 		private String endpoint="awsendpoint";
 		
 		@GetMapping("/home")
@@ -41,34 +40,19 @@ public class AwsSqsApplication {
 		}
 		@RequestMapping("/aws")
 		public String sendmessage(@RequestBody SurveyLaunch name) {
-//			System.out.println("-----------------------");
-//			System.out.println(name.getId());
-//			System.out.println(name.getName());
-//			System.out.println(name.getData());
-//			System.out.println("-----------------------");
 			String obj=new Gson().toJson(name);
 			queueMessagingTemplate.send(endpoint,MessageBuilder.withPayload(obj).build());
-			return "done";
+			return "Message sent to SQS Queue";
 		}
 		
 		@SqsListener("test-queue")
 		public void recieve(String name) throws JsonMappingException, JsonProcessingException {
 			SurveyLaunch surveyLaunch=new Gson().fromJson(name, SurveyLaunch.class);
-			//ObjectMapper m = new ObjectMapper();
-			//SurveyLaunch launch=m.readValue(name, SurveyLaunch.class);
-//			System.out.println("-----------------------");
-//			System.out.println(name.getId());
-//			System.out.println(name.getName());
 			System.out.println(surveyLaunch.getData());
-			
-			System.out.println("-----------------------");
 			System.out.println(name);
 		}
+	
 		public static void main(String[] args) {
 			SpringApplication.run(AwsSqsApplication.class, args);
 		}
-		
-		
-
-
 }
