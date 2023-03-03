@@ -7,7 +7,8 @@ Steps:
 2. Click on create queue.
 3. Use Standard Queue (Our application is using standard Queue)
 4. give queue name
-5. Visibility timeout-Visibility timeout sets the length of time that a message received from a queue (by one consumer)
+5. Configure below properties according to requirement. 
+  Visibility timeout-Visibility timeout sets the length of time that a message received from a queue (by one consumer)
                       will not be visible to the other message consumers.
    Message retention period-The message retention period is the amount of time that Amazon SQS retains a message that 
                       does not get deleted. Amazon SQS automatically deletes messages that have been in a queue for more 
