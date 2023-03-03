@@ -21,14 +21,16 @@ import com.amazonaws.services.sqs.AmazonSQSAsync;
 import com.amazonaws.services.sqs.AmazonSQSAsyncClientBuilder;
 
 @Configuration
-@Component
 @ComponentScan(excludeFilters  = {@ComponentScan.Filter(
               type = FilterType.ASSIGNABLE_TYPE, classes = {ContextStackAutoConfiguration.class})})
 public class AwsSqsConfig {
+	
 	@Value("${cloud.aws.region.static}")
 	private String reagion;
+	
 	@Value("${cloud.aws.credentials.access-key}")
 	private String accesskey;
+	
 	@Value("${cloud.aws.credentials.secret-key}")
 	private String secretkey;
 	
@@ -37,12 +39,11 @@ public class AwsSqsConfig {
 		return new QueueMessagingTemplate(amazonSqsAsync());
 	}
 
-@Bean
-@Primary
+	@Bean
+	@Primary
 	public AmazonSQSAsync amazonSqsAsync() {
 		return AmazonSQSAsyncClientBuilder.standard().withRegion(Regions.US_WEST_2)
-				.withCredentials(new AWSStaticCredentialsProvider(
-						new BasicAWSCredentials(accesskey, secretkey)) )
+				.withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials(accesskey, secretkey)))
 				.build();
 	}
 }
